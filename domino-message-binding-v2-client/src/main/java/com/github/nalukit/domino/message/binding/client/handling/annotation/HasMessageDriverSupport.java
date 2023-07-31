@@ -25,7 +25,7 @@ public @interface HasMessageDriverSupport {
    * <li><b>false</b>: error message will be removed the next time error messages will be set</li>
    * <li><b>true</b>: error message will be removed in case a field blurs</li>
    * </ul>
-   * 
+   * <p>
    * Default is <b>true</b>
    *
    * @return how to handle a error message on a widget

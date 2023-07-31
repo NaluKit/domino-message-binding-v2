@@ -6,7 +6,7 @@ Domino-Message-Binding is a lib for displaying error messages on a Domino v2 wid
 
 * Also, we might want to display tool tips created by the server on a widget.
 
-## Idea
+## Motivation
 Expecting that error messages are created by validation in case of updating or inserting a model, we can assume, that the related widgets are attached and in focus. To get these kind of showing error messages work, we will use a naming convention. When creating a error message, we will set a name to identify the widget/widgets to display the message.
 
 ## Using
