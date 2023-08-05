@@ -77,12 +77,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.nalukit</groupId>
-      <artifactId>domino-message-binding-v2-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.dominokit</groupId>
       <artifactId>domino-ui</artifactId>
     </dependency>
