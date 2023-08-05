@@ -65,6 +65,8 @@
   </issueManagement>
 
   <properties>
+    <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>
+
     <!-- GWT needs at least java 1.6 -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -76,6 +78,22 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.dominokit</groupId>
+        <artifactId>domino-ui</artifactId>
+        <version>${domino.ui.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.dominokit</groupId>
+        <artifactId>domino-ui</artifactId>
+        <version>${domino.ui.version}</version>
+        <classifier>sources</classifier>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <modules>
     <module>domino-message-binding-v2-shared</module>

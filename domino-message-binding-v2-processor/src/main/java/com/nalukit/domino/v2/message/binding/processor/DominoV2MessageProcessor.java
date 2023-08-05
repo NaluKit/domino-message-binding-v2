@@ -16,11 +16,11 @@
 
 package com.nalukit.domino.v2.message.binding.processor;
 
-import com.github.nalukit.domino.message.binding.client.handling.AbstractMessageDriver;
-import com.github.nalukit.domino.message.binding.client.handling.IsMessageDriver;
-import com.github.nalukit.domino.message.binding.client.handling.annotation.HasMessageDriverSupport;
-import com.github.nalukit.domino.message.binding.client.handling.annotation.MessagePresenter;
-import com.github.nalukit.domino.message.binding.client.internal.helper.MessageElementWrapper;
+import com.github.nalukit.domino.v2.message.binding.client.handling.AbstractDominoV2MessageDriver;
+import com.github.nalukit.domino.v2.message.binding.client.handling.IsDominoV2MessageDriver;
+import com.github.nalukit.domino.v2.message.binding.client.handling.annotation.DominoV2MessagePresenter;
+import com.github.nalukit.domino.v2.message.binding.client.handling.annotation.HasDominoV2MessageDriverSupport;
+import com.github.nalukit.domino.v2.message.binding.client.internal.helper.DominoV2MessageElementWrapper;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
@@ -73,7 +73,7 @@ public class DominoV2MessageProcessor
 
   @Override
   public Set<String> getSupportedAnnotationTypes() {
-    return of(HasMessageDriverSupport.class.getCanonicalName()).collect(toSet());
+    return of(HasDominoV2MessageDriverSupport.class.getCanonicalName()).collect(toSet());
   }
 
   @Override
@@ -89,7 +89,7 @@ public class DominoV2MessageProcessor
       if (!roundEnv.processingOver()) {
         if (annotations.size() > 0) {
           for (TypeElement annotation : annotations) {
-            if (HasMessageDriverSupport.class.getCanonicalName()
+            if (HasDominoV2MessageDriverSupport.class.getCanonicalName()
                                              .equals(annotation.toString())) {
               handleHasMessageDriverSupportAnnotation(roundEnv);
               for (Element k : this.messagePresenterAnnotatedElements.keySet()) {
@@ -111,11 +111,11 @@ public class DominoV2MessageProcessor
                               List<VariableElement> variableElements)
       throws DominoV2MessageProcessorException {
     TypeSpec.Builder typeSpec = TypeSpec.classBuilder(annotatedElement.getSimpleName() + DominoV2MessageProcessor.IMPL_NAME)
-                                        .superclass(ParameterizedTypeName.get(ClassName.get(AbstractMessageDriver.class),
+                                        .superclass(ParameterizedTypeName.get(ClassName.get(AbstractDominoV2MessageDriver.class),
                                                                               ClassName.get((TypeElement) annotatedElement)))
                                         .addModifiers(Modifier.PUBLIC,
                                                       Modifier.FINAL)
-                                        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsMessageDriver.class),
+                                        .addSuperinterface(ParameterizedTypeName.get(ClassName.get(IsDominoV2MessageDriver.class),
                                                                                      ClassName.get((TypeElement) annotatedElement)));
 
     MethodSpec constructor = MethodSpec.constructorBuilder()
@@ -130,11 +130,11 @@ public class DominoV2MessageProcessor
                                                     .addModifiers(Modifier.PUBLIC)
                                                     .addParameter(ClassName.get((TypeElement) annotatedElement),
                                                                   "provider");
-    HasMessageDriverSupport hasMessageDriverSupportAnnotation = annotatedElement.getAnnotation(HasMessageDriverSupport.class);
+    HasDominoV2MessageDriverSupport hasMessageDriverSupportAnnotation = annotatedElement.getAnnotation(HasDominoV2MessageDriverSupport.class);
     initializeMethod.addStatement("super.clearOnBlur = $L",
                                   hasMessageDriverSupportAnnotation.clearOnBlur());
     for (VariableElement variableElement : variableElements) {
-      String messagePresenterId = variableElement.getAnnotation(MessagePresenter.class)
+      String messagePresenterId = variableElement.getAnnotation(DominoV2MessagePresenter.class)
                                                  .value();
       if (usedFieldIds.contains(messagePresenterId)) {
         throw new DominoV2MessageProcessorException("Nalu-Message-Processor: MessagePresenter-ID >>" +
@@ -144,9 +144,9 @@ public class DominoV2MessageProcessor
       usedFieldIds.add(messagePresenterId);
       initializeMethod.addStatement("super.messageElementWrappers.put($S, new $T(provider.$L, $S))",
                                     messagePresenterId,
-                                    ClassName.get(MessageElementWrapper.class),
+                                    ClassName.get(DominoV2MessageElementWrapper.class),
                                     variableElement.getSimpleName(),
-                                    variableElement.getAnnotation(MessagePresenter.class)
+                                    variableElement.getAnnotation(DominoV2MessagePresenter.class)
                                                    .value());
     }
     typeSpec.addMethod(initializeMethod.build());
@@ -168,7 +168,7 @@ public class DominoV2MessageProcessor
 
   private void handleHasMessageDriverSupportAnnotation(RoundEnvironment roundEnv)
       throws DominoV2MessageProcessorException {
-    for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(HasMessageDriverSupport.class)) {
+    for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(HasDominoV2MessageDriverSupport.class)) {
       this.validateTypeElement(annotatedElement);
       this.messagePresenterAnnotatedElements.put(annotatedElement,
                                                  new ArrayList<>());
@@ -243,7 +243,7 @@ public class DominoV2MessageProcessor
     return this.processingEnv.getElementUtils()
                              .getAllMembers(element)
                              .stream()
-                             .filter(methodElement -> methodElement.getAnnotation(MessagePresenter.class) != null)
+                             .filter(methodElement -> methodElement.getAnnotation(DominoV2MessagePresenter.class) != null)
                              .collect(Collectors.toList());
   }
 
