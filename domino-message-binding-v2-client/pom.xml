@@ -102,7 +102,7 @@
         <extensions>true</extensions>
         <configuration>
           <failOnError>true</failOnError>
-          <moduleName>com.github.nalukit.domino.v2.message.binding.DominoMessageBinding</moduleName>
+          <moduleName>com.github.nalukit.domino.v2.message.binding.DominoV2MessageBinding</moduleName>
         </configuration>
       </plugin>
     </plugins>
