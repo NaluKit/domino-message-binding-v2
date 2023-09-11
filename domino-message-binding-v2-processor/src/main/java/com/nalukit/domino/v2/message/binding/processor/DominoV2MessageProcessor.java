@@ -27,7 +27,9 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
+import org.dominokit.domino.ui.forms.AbstractFormElement;
 import org.dominokit.domino.ui.forms.InputFormField;
+import org.dominokit.domino.ui.forms.suggest.AbstractSelect;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -213,12 +215,12 @@ public class DominoV2MessageProcessor
       if (!this.dominoV2MessageProcessorUtils.extendsClassOrInterface(super.processingEnv.getTypeUtils(),
                                                                       variableElement.asType(),
                                                                       this.processingEnv.getElementUtils()
-                                                                         .getTypeElement(InputFormField.class.getCanonicalName())
+                                                                         .getTypeElement(AbstractFormElement.class.getCanonicalName())
                                                                          .asType())) {
         throw new DominoV2MessageProcessorException("Nalu-Message-Processor: " +
                                                     variableElement.getSimpleName()
                                                     .toString() +
-                                                    ": @MessageSupport: element must extend BasicFormElement (Domino-UI) super class");
+                                                    ": @MessageSupport: element must extend AbstractFormElement (Domino-UI) super class");
       }
     } else {
       throw new DominoV2MessageProcessorException("Nalu-Message-Processory:" +

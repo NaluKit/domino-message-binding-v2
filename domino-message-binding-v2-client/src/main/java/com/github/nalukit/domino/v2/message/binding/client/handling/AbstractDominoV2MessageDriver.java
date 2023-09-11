@@ -3,6 +3,8 @@ package com.github.nalukit.domino.v2.message.binding.client.handling;
 import com.github.nalukit.domino.v2.message.binding.client.internal.helper.DominoV2MessageElementWrapper;
 import com.github.nalukit.domino.v2.message.binding.shared.model.IsDominoV2Message;
 import org.dominokit.domino.ui.events.EventType;
+import org.dominokit.domino.ui.forms.InputFormField;
+import org.dominokit.domino.ui.forms.suggest.AbstractSelect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,12 +35,20 @@ public abstract class AbstractDominoV2MessageDriver<P extends IsDominoV2MessageP
   public void deregister() {
     this.messageElementWrappers.values()
                                .forEach(e -> {
-                                 e.getFormElement()
-                                  .getInputElement()
-                                  .removeEventListener(EventType.blur,
-                                                       e.getBlurEventListener());
-                                 e.setBlurEventListener(null);
-                               });
+                                 if (e.getFormElement() instanceof InputFormField) {
+                                   ((InputFormField<?, ?, ?>) e.getFormElement())
+                                       .getInputElement()
+                                       .removeEventListener(EventType.blur,
+                                                            e.getBlurEventListener());
+                                   e.setBlurEventListener(null);
+                                 } else if (e.getFormElement() instanceof AbstractSelect) {
+                                   ((AbstractSelect<?, ?, ?, ?, ?>) e.getFormElement())
+                                       .getInputElement()
+                                       .removeEventListener(EventType.blur,
+                                                            e.getBlurEventListener());
+                                   e.setBlurEventListener(null);
+                                 }
+                                });
   }
 
   @Override
@@ -94,13 +104,22 @@ public abstract class AbstractDominoV2MessageDriver<P extends IsDominoV2MessageP
                                  if (clearOnBlur) {
                                    elemental2.dom.EventListener eventlistener = evt -> w.getFormElement()
                                                                                       .clearInvalid();
-                                   w.getFormElement()
-                                    .getInputElement()
-                                    .addEventListener(EventType.blur,
-                                                      eventlistener);
+                                   if (w.getFormElement() instanceof InputFormField) {
+                                     ((InputFormField<?, ?, ?>) w.getFormElement())
+                                      .getInputElement()
+                                      .addEventListener(EventType.blur,
+                                                        eventlistener);
+                                   } else if (w.getFormElement() instanceof AbstractSelect) {
+                                     ((AbstractSelect<?, ?, ?, ?, ?>) w.getFormElement())
+                                         .getInputElement()
+                                         .addEventListener(EventType.blur,
+                                                           eventlistener);
+                                   }
                                    w.setBlurEventListener(eventlistener);
                                  }
                                });
+
+
   }
 
 }

@@ -1,22 +1,23 @@
 package com.github.nalukit.domino.v2.message.binding.client.internal.helper;
 
 import elemental2.dom.EventListener;
+import org.dominokit.domino.ui.forms.AbstractFormElement;
 import org.dominokit.domino.ui.forms.InputFormField;
+import org.dominokit.domino.ui.forms.suggest.AbstractSelect;
 
 public class DominoV2MessageElementWrapper {
 
-  private final InputFormField<?, ?, ?> formElement;
-  private final String               fieldId;
-  private       EventListener        blurEventListener;
+  private AbstractFormElement<?, ?>  formElement;
+  private String                  fieldId;
+  private       EventListener           blurEventListener;
   //  private List<InvalidHandler>   invalidHandlers;
   //  private List<ValidHandler>     validHandlers;
 
-  public DominoV2MessageElementWrapper() {
-    this(null,
-         null);
+  @SuppressWarnings("unused")
+  private DominoV2MessageElementWrapper() {
   }
 
-  public DominoV2MessageElementWrapper(InputFormField<?, ?, ?> formElement,
+  public DominoV2MessageElementWrapper(AbstractFormElement<?, ?> formElement,
                                        String fieldId) {
     this.formElement = formElement;
     this.fieldId = fieldId;
@@ -81,7 +82,7 @@ public class DominoV2MessageElementWrapper {
    *
    * @return element
    */
-  public InputFormField<?, ?, ?> getFormElement() {
+  public AbstractFormElement<?, ?> getFormElement() {
     return this.formElement;
   }
 
