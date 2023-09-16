@@ -24,7 +24,7 @@
   <parent>
     <groupId>com.github.nalukit</groupId>
     <artifactId>domino-message-binding-v2</artifactId>
-    <version>HEAD-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
 
   <artifactId>domino-message-binding-v2-client</artifactId>

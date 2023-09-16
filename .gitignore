@@ -3,5 +3,6 @@
 # See http://www.gwtproject.org/makinggwtbetter.html#global_gitignore
 
 target/
+.idea/
 
 .flattened-pom.xml
