@@ -69,6 +69,7 @@
 
   <properties>
     <autoservice.version>1.0.1</autoservice.version>
+    <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>
     <javapoet.version>1.12.1</javapoet.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -77,7 +78,7 @@
   <dependencies>
     <dependency>
       <groupId>com.github.nalukit</groupId>
-      <artifactId>domino-message-binding-client</artifactId>
+      <artifactId>domino-message-binding-v2-client</artifactId>
       <version>${project.version}</version>
     </dependency>
 
