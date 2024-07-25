@@ -23,7 +23,7 @@
 
   <groupId>com.github.nalukit</groupId>
   <artifactId>domino-message-binding-v2</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 
   <packaging>pom</packaging>
 
@@ -45,8 +45,8 @@
     <developer>
       <name>Frank Hossfeld</name>
       <id>frankhossfeld</id>
-      <email>hossfeld@hossfeld-solutions.de</email>
-      <organization>Hossfeld Solutions GmbH</organization>
+      <email>info@hnalu-solutions.de</email>
+      <organization>Nalu Solutions GmbH</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -66,11 +66,10 @@
 
   <properties>
 <!--    <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>-->
-    <domino.ui.version>2.0.0-RC3</domino.ui.version>
+    <domino.ui.version>2.0.1</domino.ui.version>
 
-    <!-- GWT needs at least java 1.6 -->
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
 
     <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
