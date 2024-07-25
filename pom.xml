@@ -65,12 +65,13 @@
   </issueManagement>
 
   <properties>
-    <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>
-<!--    <domino.ui.version>2.0.0-RC1</domino.ui.version>-->
+<!--    <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>-->
+    <domino.ui.version>2.0.0-RC3</domino.ui.version>
 
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
+    <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
     <plugin.version.javadoc>3.1.1</plugin.version.javadoc>
     <plugin.version.source>3.0.1</plugin.version.source>
@@ -157,6 +158,12 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -170,6 +177,14 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>${maven.deploy.plugin}</version>
+            <configuration>
+              <skip>false</skip>
+            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
