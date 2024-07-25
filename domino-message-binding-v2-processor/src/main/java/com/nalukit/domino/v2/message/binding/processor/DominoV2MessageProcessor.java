@@ -70,7 +70,7 @@ public class DominoV2MessageProcessor
 
   @Override
   public SourceVersion getSupportedSourceVersion() {
-    return SourceVersion.RELEASE_8;
+    return SourceVersion.latestSupported();
   }
 
   @Override
@@ -89,7 +89,7 @@ public class DominoV2MessageProcessor
                          RoundEnvironment roundEnv) {
     try {
       if (!roundEnv.processingOver()) {
-        if (annotations.size() > 0) {
+        if (!annotations.isEmpty()) {
           for (TypeElement annotation : annotations) {
             if (HasDominoV2MessageDriverSupport.class.getCanonicalName()
                                              .equals(annotation.toString())) {
