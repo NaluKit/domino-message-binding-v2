@@ -69,7 +69,7 @@
 
   <properties>
     <autoservice.version>1.0.1</autoservice.version>
-    <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>
+    <domino.ui.version>2.0.1</domino.ui.version>
     <javapoet.version>1.12.1</javapoet.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
