@@ -1,16 +1,34 @@
-name: WikiPages
-
-on: [push]
-
+name: Sync wiki
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - etc/wiki/**
+#  gollum:
+#  schedule:
+#    - cron: "8 14 * * *"
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy-wiki:
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Upload Documentation to Wiki
-        uses: SwiftDocOrg/github-wiki-publish-action@v1
+      - uses: actions/checkout@v4
+      - uses: actions4gh/configure-wiki@v1
+      - uses: actions4gh/deploy-wiki@v1
+  commit-wiki:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          path: etc/wiki
-        env:
-          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          repository: ${{ github.repository }}.wiki
+          path: wiki
+      - run: rm -rf wiki/.git
+      - uses: actions4gh/configure-wiki/reverse@v1
+      - uses: actions4git/add-commit-push@v1
