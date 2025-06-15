@@ -29,8 +29,8 @@
 
   <name>domino-message-binding-v2</name>
   <description>Binding server messages to Domino-UI widgets</description>
+  <url>https://github.com/NaluKit/domino-message-binding-v2</url>
 
-  <url>https://github.com/frankhossfeld/domino-message-binding</url>
   <inceptionYear>2019</inceptionYear>
 
   <licenses>
@@ -54,28 +54,28 @@
   </developers>
 
   <scm>
-    <connection>scm:git@github.com:frankhossfeld/domino-message-binding.git</connection>
-    <developerConnection>scm:git:git@github.com:frankhossfeld/domino-message-binding.git</developerConnection>
-    <url>scm:git:https://github.com/frankhossfeld/domino-message-binding</url>
+    <connection>scm:git@github.com:NaluKit/domino-message-binding.git</connection>
+    <developerConnection>scm:git:git@github.com:NaluKit/domino-message-binding.git</developerConnection>
+    <url>scm:git:https://github.com/NaluKit/domino-message-binding-v2</url>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/frankhossfeld/domino-message-binding/issues</url>
+    <url>https://github.com/NaluKit/domino-message-binding-v2/issues</url>
   </issueManagement>
 
   <properties>
-<!--    <domino.ui.version>HEAD-SNAPSHOT</domino.ui.version>-->
-    <domino.ui.version>2.0.1</domino.ui.version>
+    <domino.ui.version>2.0.4</domino.ui.version>
+
+    <java.doc.executable>${java.home}/bin/javadoc</java.doc.executable>
 
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
-    <maven.deploy.plugin>3.1.1</maven.deploy.plugin>
+    <plugin.version.central>0.7.0</plugin.version.central>
     <plugin.version.gpg.maven>1.6</plugin.version.gpg.maven>
-    <plugin.version.javadoc>3.1.1</plugin.version.javadoc>
-    <plugin.version.source>3.0.1</plugin.version.source>
-    <plugin.version.nexus.staging>1.6.8</plugin.version.nexus.staging>
+    <plugin.version.javadoc>3.6.3</plugin.version.javadoc>
+    <plugin.version.source>3.2.1</plugin.version.source>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -102,48 +102,75 @@
     <module>domino-message-binding-v2-processor</module>
   </modules>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
-
-  <repositories>
-    <repository>
-      <id>oss-sonatype</id>
-      <name>oss-sonatype</name>
-      <url>https://oss.sonatype.org/content/repositories/google-snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>sonatype-plugins</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
   <profiles>
     <profile>
       <id>release</id>
       <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-gpg-plugin</artifactId>
+              <version>${plugin.version.gpg.maven}</version>
+              <executions>
+                <execution>
+                  <id>sign-artifacts</id>
+                  <phase>verify</phase>
+                  <goals>
+                    <goal>sign</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <!-- Prevent gpg from using pinentry programs -->
+                <gpgArguments>
+                  <arg>--pinentry-mode</arg>
+                  <arg>loopback</arg>
+                </gpgArguments>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.sonatype.central</groupId>
+              <artifactId>central-publishing-maven-plugin</artifactId>
+              <version>${plugin.version.central}</version>
+              <extensions>true</extensions>
+              <configuration>
+                <publishingServerId>central</publishingServerId>
+                <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
+                <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>${plugin.version.javadoc}</version>
+              <configuration>
+                <javadocExecutable>${java.doc.executable}</javadocExecutable>
+              </configuration>
+              <executions>
+                <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>${plugin.version.source}</version>
+              <executions>
+                <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                    <goal>jar-no-fork</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -159,6 +186,7 @@
               </execution>
             </executions>
             <configuration>
+              <!-- Prevent gpg from using pinentry programs -->
               <gpgArguments>
                 <arg>--pinentry-mode</arg>
                 <arg>loopback</arg>
@@ -166,9 +194,23 @@
             </configuration>
           </plugin>
           <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>${plugin.version.central}</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
+              <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
+            </configuration>
+          </plugin>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${plugin.version.javadoc}</version>
+            <configuration>
+              <javadocExecutable>${java.doc.executable}</javadocExecutable>
+            </configuration>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -177,14 +219,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <version>${maven.deploy.plugin}</version>
-            <configuration>
-              <skip>false</skip>
-            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -198,17 +232,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>${plugin.version.nexus.staging}</version>
-            <extensions>true</extensions>
-            <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            </configuration>
           </plugin>
         </plugins>
       </build>
