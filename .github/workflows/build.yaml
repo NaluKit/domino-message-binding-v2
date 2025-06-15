@@ -1,17 +1,17 @@
 #
-# Copyright © 2018 - Frank Hossfeld
+#  Copyright © 2023 Frank Hossfeld, Philipp Kohl
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 #
 
 name: Build & Deploy
@@ -21,6 +21,8 @@ on:
     branches:
       - dev
       - main
+    paths-ignore:
+      - "README.md"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -46,7 +48,7 @@ jobs:
           cache: maven
       - name: Test with Maven
         run: mvn test -ntp
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: surefire-report
@@ -101,7 +103,7 @@ jobs:
           distribution: temurin
           java-version: '11'
           cache: maven
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Extract Maven project version
@@ -124,9 +126,9 @@ jobs:
           gpg --list-secret-keys --keyid-format LONG
       - name: Deploy with Maven
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: mvn deploy -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Drevision=HEAD-SNAPSHOT
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+        run: mvn deploy -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -P release
 
   maven-deploy-main:
     runs-on: ubuntu-latest
@@ -139,7 +141,7 @@ jobs:
           distribution: temurin
           java-version: '11'
           cache: maven
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Extract Maven project version
@@ -170,7 +172,7 @@ jobs:
           exit 1
         if: ${{ steps.version-check.outputs.already-exists == 'true' }}
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body: Relase of version ${{ steps.project.outputs.version }}
           tag_name: ${{ steps.project.outputs.version }}
@@ -183,7 +185,7 @@ jobs:
           gpg --list-secret-keys --keyid-format LONG
       - name: Deploy with Maven
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: mvn deploy -ntp -P release -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Daether.checksums.algorithms=MD5 -Drevision=${{ steps.project.outputs.version }}
+          MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+        run: mvn deploy -ntp -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD_NALUKIT_GITHUB_USER }} -DskipTests -Daether.checksums.algorithms=MD5 -P release
 
