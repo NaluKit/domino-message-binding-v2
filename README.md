@@ -158,3 +158,6 @@ public interface IsDominoMessage {
 
 ## Example
 An implementation of the binding feature can be found here: [Domino-Binidng-Example](https://github.com/NaluKit/domino-binding-example)
+
+## Migration to io.github
+
