@@ -22,9 +22,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.github.nalukit</groupId>
+    <groupId>io.github.nalukit</groupId>
     <artifactId>domino-message-binding-v2</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
   </parent>
 
   <artifactId>domino-message-binding-v2-client</artifactId>
@@ -86,7 +86,7 @@
     </dependency>
 
     <dependency>
-      <groupId>com.github.nalukit</groupId>
+      <groupId>io.github.nalukit</groupId>
       <artifactId>domino-message-binding-v2-shared</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -126,7 +126,7 @@
         <version>${maven.gwt.plugin}</version>
         <extensions>true</extensions>
         <configuration>
-          <moduleName>com.github.nalukit.domino.v2.message.binding.DominoV2MessageBinding</moduleName>
+          <moduleName>io.github.nalukit.domino.v2.message.binding.DominoV2MessageBinding</moduleName>
         </configuration>
       </plugin>
       <plugin>
