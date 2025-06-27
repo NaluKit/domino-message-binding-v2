@@ -158,3 +158,10 @@ public interface IsDominoMessage {
 
 ## Example
 An implementation of the binding feature can be found here: [Domino-Binidng-Example](https://github.com/NaluKit/domino-binding-example)
+
+## Migration to io.github
+
+Migration to the new namespace is quite simple. There only to things to do:
+
+1. change the groupId from `com.github.nalukit` to `ìo.github.nalukit`
+2. replace all imports from `import com.github.nalukit` to `import io.github.nalukit`  
